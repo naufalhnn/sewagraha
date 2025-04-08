@@ -40,3 +40,11 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface PageProps {
+    flash: {
+        success?: string;
+        error?: string;
+    };
+    [key: string]: unknown;
+}
