@@ -24,7 +24,7 @@ interface Facility {
     description: string;
 }
 
-export default function EditFacility() {
+export default function EditFacilities() {
     const { facility } = usePage<{ facility: Facility }>().props;
     const { data, setData, put, processing, errors } = useForm({
         name: facility.name,

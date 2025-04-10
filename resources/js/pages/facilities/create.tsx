@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Facilities() {
+export default function CreateFacility() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',

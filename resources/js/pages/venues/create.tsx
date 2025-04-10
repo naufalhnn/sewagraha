@@ -4,43 +4,36 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Fasilitas',
-        href: '/facilities',
+        title: 'Venue',
+        href: '/venues',
     },
     {
-        title: 'Edit Fasilitas',
-        href: '/facilities/edit',
+        title: 'Tambah Venue',
+        href: '/venues/create',
     },
 ];
 
-interface Facility {
-    id: number;
-    name: string;
-    description: string;
-}
-
-export default function EditFacility() {
-    const { facility } = usePage<{ facility: Facility }>().props;
-    const { data, setData, put, processing, errors } = useForm({
-        name: facility.name,
-        description: facility.description,
+export default function CreateVenue() {
+    const { data, setData, post, processing, errors } = useForm({
+        name: '',
+        description: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('facilities.update', facility.id));
+        post(route('facilities.store'));
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Fasilitas" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <h1 className="text-2xl font-semibold">Edit Fasilitas:</h1>
+                <h1 className="text-2xl font-semibold">Tambah Fasilitas</h1>
 
                 <form onSubmit={submit} className="my-5 space-y-6">
                     <div className="grid gap-2">
@@ -78,7 +71,7 @@ export default function EditFacility() {
 
                     <div className="flex justify-start gap-4">
                         <Button type="submit" disabled={processing} className="cursor-pointer">
-                            Edit Fasilitas
+                            Tambah Fasilitas
                         </Button>
                     </div>
                 </form>

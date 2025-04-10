@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,6 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('facilities/{id}/edit', [FacilityController::class, 'edit'])->name('facilities.edit');
     Route::put('facilities/{id}/update', [FacilityController::class, 'update'])->name('facilities.update');
     Route::delete('facilities/delete/{id}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
+
+    Route::get('venues', [VenueController::class, 'index'])->name('venues.index');
+    Route::get('venues/create', [VenueController::class, 'create'])->name('venues.create');
 });
 
 require __DIR__ . '/settings.php';
