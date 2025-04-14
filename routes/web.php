@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\PurposeController;
 use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,10 +20,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('facilities/store', [FacilityController::class, 'store'])->name('facilities.store');
     Route::get('facilities/{id}/edit', [FacilityController::class, 'edit'])->name('facilities.edit');
     Route::put('facilities/{id}/update', [FacilityController::class, 'update'])->name('facilities.update');
-    Route::delete('facilities/delete/{id}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
+    Route::delete('facilities/{id}/delete', [FacilityController::class, 'destroy'])->name('facilities.destroy');
 
     Route::get('venues', [VenueController::class, 'index'])->name('venues.index');
     Route::get('venues/create', [VenueController::class, 'create'])->name('venues.create');
+
+    Route::get('purposes', [PurposeController::class, 'index'])->name('purposes.index');
+    Route::get('purposes/create', [PurposeController::class, 'create'])->name('purposes.create');
+    Route::post('purposes/store', [PurposeController::class, 'store'])->name('purposes.store');
+    Route::get('purposes/{id}/edit', [PurposeController::class, 'edit'])->name('purposes.edit');
+    Route::put('purposes/{id}/update', [PurposeController::class, 'update'])->name('purposes.update');
+    Route::delete('purposes/{id}/delete/', [PurposeController::class, 'destroy'])->name('purposes.destroy');
 });
 
 require __DIR__ . '/settings.php';

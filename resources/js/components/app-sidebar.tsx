@@ -23,6 +23,11 @@ const mainNavItems: NavItem[] = [
         href: '/facilities',
         icon: LayoutGrid,
     },
+    {
+        title: 'Kegunaan Gedung',
+        href: '/purposes',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

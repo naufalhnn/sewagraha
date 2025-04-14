@@ -4,47 +4,40 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Fasilitas',
-        href: '/facilities',
+        title: 'Kegunaan Gedung',
+        href: '/purposes',
     },
     {
-        title: 'Edit Fasilitas',
-        href: '/facilities/edit',
+        title: 'Tambah Kegunaan',
+        href: '/purposes/create',
     },
 ];
 
-interface Facility {
-    id: number;
-    name: string;
-    description: string;
-}
-
-export default function EditFacility() {
-    const { facility } = usePage<{ facility: Facility }>().props;
-    const { data, setData, put, processing, errors } = useForm({
-        name: facility.name,
-        description: facility.description,
+export default function CreatePurpose() {
+    const { data, setData, post, processing, errors } = useForm({
+        name: '',
+        description: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('facilities.update', facility.id));
+        post(route('purposes.store'));
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Edit Fasilitas" />
+            <Head title="Tambah Kegunaan" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <h1 className="text-2xl font-semibold">Edit Fasilitas</h1>
+                <h1 className="text-2xl font-semibold">Tambah Kegunaan</h1>
 
                 <form onSubmit={submit} className="my-5 space-y-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Nama Fasilitas</Label>
+                        <Label htmlFor="name">Kegunaan</Label>
 
                         <Input
                             id="name"
@@ -54,7 +47,7 @@ export default function EditFacility() {
                             className="mt-1 block w-full"
                             required
                             autoComplete="name"
-                            placeholder="Masukkan nama fasilitas"
+                            placeholder="Masukkan kegunaan"
                         />
 
                         <InputError className="mt-2" message={errors.name} />
@@ -70,7 +63,7 @@ export default function EditFacility() {
                             className="mt-1 block w-full"
                             required
                             autoComplete="description"
-                            placeholder="Masukkan deskripsi"
+                            placeholder="Masukkan deskripsi kegunaan"
                         />
 
                         <InputError className="mt-2" message={errors.description} />
@@ -78,7 +71,7 @@ export default function EditFacility() {
 
                     <div className="flex justify-start gap-4">
                         <Button type="submit" disabled={processing} className="cursor-pointer">
-                            Simpan Perubahan
+                            Tambah Fasilitas
                         </Button>
                     </div>
                 </form>

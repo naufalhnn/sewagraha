@@ -14,4 +14,9 @@ class Facility extends Model
         'name',
         'description'
     ];
+
+    public function venues()
+    {
+        return $this->belongsToMany(Venue::class, 'venue_facilities');
+    }
 }

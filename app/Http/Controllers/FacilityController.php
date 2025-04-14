@@ -28,14 +28,14 @@ class FacilityController extends Controller
         return redirect()->route('facilities.index')->with('success', 'Fasilitas berhasil ditambahkan.');
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
         $facility = Facility::findOrFail($id);
 
         return Inertia::render('facilities/edit', compact('facility'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $facility = Facility::findOrFail($id);
         $data = $request->all();
@@ -45,7 +45,7 @@ class FacilityController extends Controller
         return redirect()->route('facilities.index')->with('success', 'Fasilitas berhasil diubah.');
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
         $facility = Facility::findOrFail($id);
         $facility->delete();
