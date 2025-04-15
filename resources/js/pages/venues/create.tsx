@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,6 +26,12 @@ interface Facility {
     description: string;
 }
 
+interface Purpose {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export default function CreateVenue() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
@@ -35,9 +41,13 @@ export default function CreateVenue() {
         base_price: '',
         building_condition: '',
         facilities: [] as number[],
+        purposes: [] as number[],
+        images: [] as File[],
     });
 
     const { facilities } = usePage<{ facilities: Facility[] }>().props;
+    const { purposes } = usePage<{ purposes: Purpose[] }>().props;
+    const [previewImages, setPreviewImages] = useState<string[]>([]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -136,6 +146,34 @@ export default function CreateVenue() {
 
                         <InputError className="mt-2" message={errors.description} />
                     </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="purpose_id">Kegunaan</Label>
+                        {purposes.map((purpose) => (
+                            <div key={purpose.id} className="flex items-center space-x-2">
+                                <Checkbox
+                                    id={`purpose-${purpose.id}`}
+                                    checked={data.purposes.includes(purpose.id)}
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            setData('purposes', [...data.purposes, purpose.id]);
+                                        } else {
+                                            setData(
+                                                'purposes',
+                                                data.purposes.filter((id) => id !== purpose.id),
+                                            );
+                                        }
+                                    }}
+                                />
+                                <label htmlFor={`purpose-${purpose.id}`} className="text-sm">
+                                    {purpose.name}
+                                </label>
+                            </div>
+                        ))}
+
+                        <InputError className="mt-2" message={errors.description} />
+                    </div>
+
                     <div className="grid gap-2">
                         <Label htmlFor="facility_id">Fasilitas</Label>
                         {facilities.map((facility) => (
@@ -162,6 +200,7 @@ export default function CreateVenue() {
 
                         <InputError className="mt-2" message={errors.description} />
                     </div>
+
                     <div className="grid gap-2">
                         <Label htmlFor="building_condition">Kondisi Gedung</Label>
 
@@ -179,6 +218,37 @@ export default function CreateVenue() {
                         </Select>
 
                         <InputError className="mt-2" message={errors.description} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="images">Foto Gedung</Label>
+
+                        <Input
+                            id="images"
+                            name="images"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={(e) => {
+                                const files = Array.from(e.target.files ?? []);
+                                setData('images', files);
+
+                                const previews = files.map((file) => URL.createObjectURL(file));
+                                setPreviewImages(previews);
+                            }}
+                            className="mt-1 block w-full cursor-pointer"
+                            required
+                            autoComplete="images"
+                            placeholder="Upload foto gedung"
+                        />
+
+                        <InputError className="mt-2" message={errors.description} />
+                    </div>
+
+                    <div className="mt-2 flex flex-wrap gap-4">
+                        {previewImages.map((src, index) => (
+                            <img key={index} src={src} alt="Foto Gedung" className="h-24 rounded object-cover" />
+                        ))}
                     </div>
 
                     <div className="flex justify-start gap-4">

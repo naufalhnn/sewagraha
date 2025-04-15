@@ -3,6 +3,7 @@
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\PurposeController;
 use App\Http\Controllers\VenueController;
+use App\Http\Controllers\VenueImageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,6 +25,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('venues', [VenueController::class, 'index'])->name('venues.index');
     Route::get('venues/create', [VenueController::class, 'create'])->name('venues.create');
+    Route::post('venues/store', [VenueController::class, 'store'])->name('venues.store');
+    Route::get('venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.edit');
+    Route::put('venues/{id}/update', [VenueController::class, 'update'])->name('venues.update');
+    Route::delete('venues/{id}/destroy', [VenueController::class, 'destroy'])->name('venues.destroy');
+    Route::get('venues/{id}/show', [VenueController::class, 'show'])->name('venues.show');
+
+    Route::delete('venue-images/{id}/delete', [VenueImageController::class, 'destroy'])->name('venue-images.destroy');
 
     Route::get('purposes', [PurposeController::class, 'index'])->name('purposes.index');
     Route::get('purposes/create', [PurposeController::class, 'create'])->name('purposes.create');

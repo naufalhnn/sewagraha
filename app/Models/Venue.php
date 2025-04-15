@@ -30,7 +30,7 @@ class Venue extends Model
         return $this->belongsToMany(Purpose::class, 'venue_purposes');
     }
 
-    public function venueImages()
+    public function venue_images()
     {
         return $this->hasMany(VenueImage::class, 'venue_id', 'id');
     }

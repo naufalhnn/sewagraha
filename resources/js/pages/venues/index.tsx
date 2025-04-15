@@ -13,7 +13,7 @@ import FlashMessage from '@/components/ui/flash-message';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { SquarePen, Trash } from 'lucide-react';
+import { Eye, SquarePen, Trash } from 'lucide-react';
 import { MouseEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -74,66 +74,86 @@ export default function Venues() {
                         <tbody>
                             {venues.length == 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="border-1 px-4 py-2 text-center font-semibold">
+                                    <td colSpan={7} className="border px-4 py-2 text-center font-semibold">
                                         Belum ada data
                                     </td>
                                 </tr>
                             ) : (
                                 venues.map((venue) => (
-                                    <tr key={venue.id}>
-                                        <td className="border-1 px-4 py-2">{venue.name}</td>
-                                        <td className="border-1 px-4 py-2">{venue.description}</td>
-                                        <td className="border-1 px-4 py-2">{venue.address}</td>
-                                        <td className="border-1 px-4 py-2">{venue.capacity}</td>
-                                        <td className="border-1 px-4 py-2">{venue.base_price}</td>
-                                        <td className="border-1 px-4 py-2">{venue.building_condition}</td>
-                                        <td className="flex justify-center space-x-1 border-1 px-4 py-2 text-center">
-                                            <Link href={route('facilities.edit', venue.id)} className="cursor-pointer">
-                                                <Button
-                                                    size={'sm'}
-                                                    className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200"
-                                                >
-                                                    <SquarePen />
-                                                </Button>
-                                            </Link>
-                                            <Dialog open={open && selectedVenue?.id === venue.id} onOpenChange={setOpen}>
-                                                <DialogTrigger asChild>
+                                    <tr key={venue.id} className="align-top">
+                                        <td className="border px-4 py-2">{venue.name}</td>
+                                        <td className="max-w-[200px] border px-4 py-2">
+                                            <div className="line-clamp-2">{venue.description}</div>
+                                        </td>
+                                        <td className="max-w-[200px] border px-4 py-2">
+                                            <div className="line-clamp-2">{venue.address}</div>
+                                        </td>
+                                        <td className="border px-4 py-2">{venue.capacity} orang</td>
+                                        <td className="border px-4 py-2">
+                                            {new Intl.NumberFormat('id-ID', {
+                                                style: 'currency',
+                                                currency: 'IDR',
+                                                minimumFractionDigits: 0,
+                                            }).format(venue.base_price)}
+                                        </td>
+                                        <td className="border px-4 py-2">{venue.building_condition}</td>
+                                        <div className="flex h-full items-center justify-center gap-1">
+                                            <td className="flex min-h-[4rem] items-center border px-4 py-2">
+                                                <Link href={route('venues.show', venue.id)} className="cursor-pointer">
                                                     <Button
                                                         size={'sm'}
-                                                        className="cursor-pointer bg-red-100 text-sm text-red-600 transition duration-300 hover:bg-red-200"
-                                                        onClick={() => {
-                                                            setSelectedVenue(venue);
-                                                            setOpen(true);
-                                                        }}
+                                                        className="cursor-pointer bg-green-100 text-sm text-green-600 transition duration-300 hover:bg-green-200"
                                                     >
-                                                        <Trash />
+                                                        <Eye />
                                                     </Button>
-                                                </DialogTrigger>
-                                                <DialogContent>
-                                                    <DialogHeader>
-                                                        <DialogTitle>Hapus Fasilitas</DialogTitle>
-                                                        <DialogDescription>
-                                                            Apakah anda yakin ingin menghapus fasilitas <strong>{venue?.name}</strong>?
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-
-                                                    <DialogFooter>
-                                                        <DialogClose>
-                                                            <Button variant={'ghost'} className="cursor-pointer transition duration-300">
-                                                                Batal
-                                                            </Button>
-                                                        </DialogClose>
+                                                </Link>
+                                                <Link href={route('venues.edit', venue.id)} className="cursor-pointer">
+                                                    <Button
+                                                        size={'sm'}
+                                                        className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200"
+                                                    >
+                                                        <SquarePen />
+                                                    </Button>
+                                                </Link>
+                                                <Dialog open={open && selectedVenue?.id === venue.id} onOpenChange={setOpen}>
+                                                    <DialogTrigger asChild>
                                                         <Button
-                                                            variant={'destructive'}
-                                                            onClick={handleDelete}
-                                                            className="cursor-pointer transition duration-300 hover:bg-red-700"
+                                                            size={'sm'}
+                                                            className="cursor-pointer bg-red-100 text-sm text-red-600 transition duration-300 hover:bg-red-200"
+                                                            onClick={() => {
+                                                                setSelectedVenue(venue);
+                                                                setOpen(true);
+                                                            }}
                                                         >
-                                                            Hapus
+                                                            <Trash />
                                                         </Button>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
-                                        </td>
+                                                    </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>Hapus Fasilitas</DialogTitle>
+                                                            <DialogDescription>
+                                                                Apakah anda yakin ingin menghapus fasilitas <strong>{venue?.name}</strong>?
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+
+                                                        <DialogFooter>
+                                                            <DialogClose>
+                                                                <Button variant={'ghost'} className="cursor-pointer transition duration-300">
+                                                                    Batal
+                                                                </Button>
+                                                            </DialogClose>
+                                                            <Button
+                                                                variant={'destructive'}
+                                                                onClick={handleDelete}
+                                                                className="cursor-pointer transition duration-300 hover:bg-red-700"
+                                                            >
+                                                                Hapus
+                                                            </Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </td>
+                                        </div>
                                     </tr>
                                 ))
                             )}
