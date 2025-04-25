@@ -97,60 +97,55 @@ export default function Venues() {
                       }).format(venue.base_price)}
                     </td>
                     <td className="border px-4 py-2">{venue.building_condition}</td>
-                    <div className="flex h-full items-center justify-center gap-1">
-                      <td className="flex min-h-[4rem] items-center border px-4 py-2">
-                        <Link href={route('venues.show', venue.id)} className="cursor-pointer">
+                    <td className="flex min-h-[4rem] items-center justify-center gap-1 border px-4 py-2">
+                      <Link href={route('venues.show', venue.id)} className="cursor-pointer">
+                        <Button size={'sm'} className="cursor-pointer bg-green-100 text-sm text-green-600 transition duration-300 hover:bg-green-200">
+                          <Eye />
+                        </Button>
+                      </Link>
+                      <Link href={route('venues.edit', venue.id)} className="cursor-pointer">
+                        <Button size={'sm'} className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200">
+                          <SquarePen />
+                        </Button>
+                      </Link>
+                      <Dialog open={open && selectedVenue?.id === venue.id} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
                           <Button
                             size={'sm'}
-                            className="cursor-pointer bg-green-100 text-sm text-green-600 transition duration-300 hover:bg-green-200"
+                            className="cursor-pointer bg-red-100 text-sm text-red-600 transition duration-300 hover:bg-red-200"
+                            onClick={() => {
+                              setSelectedVenue(venue);
+                              setOpen(true);
+                            }}
                           >
-                            <Eye />
+                            <Trash />
                           </Button>
-                        </Link>
-                        <Link href={route('venues.edit', venue.id)} className="cursor-pointer">
-                          <Button size={'sm'} className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200">
-                            <SquarePen />
-                          </Button>
-                        </Link>
-                        <Dialog open={open && selectedVenue?.id === venue.id} onOpenChange={setOpen}>
-                          <DialogTrigger asChild>
-                            <Button
-                              size={'sm'}
-                              className="cursor-pointer bg-red-100 text-sm text-red-600 transition duration-300 hover:bg-red-200"
-                              onClick={() => {
-                                setSelectedVenue(venue);
-                                setOpen(true);
-                              }}
-                            >
-                              <Trash />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Hapus Fasilitas</DialogTitle>
-                              <DialogDescription>
-                                Apakah anda yakin ingin menghapus fasilitas <strong>{venue?.name}</strong>?
-                              </DialogDescription>
-                            </DialogHeader>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Hapus Fasilitas</DialogTitle>
+                            <DialogDescription>
+                              Apakah anda yakin ingin menghapus fasilitas <strong>{venue?.name}</strong>?
+                            </DialogDescription>
+                          </DialogHeader>
 
-                            <DialogFooter>
-                              <DialogClose>
-                                <Button variant={'ghost'} className="cursor-pointer transition duration-300">
-                                  Batal
-                                </Button>
-                              </DialogClose>
-                              <Button
-                                variant={'destructive'}
-                                onClick={handleDelete}
-                                className="cursor-pointer transition duration-300 hover:bg-red-700"
-                              >
-                                Hapus
+                          <DialogFooter>
+                            <DialogClose>
+                              <Button variant={'ghost'} className="cursor-pointer transition duration-300">
+                                Batal
                               </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </td>
-                    </div>
+                            </DialogClose>
+                            <Button
+                              variant={'destructive'}
+                              onClick={handleDelete}
+                              className="cursor-pointer transition duration-300 hover:bg-red-700"
+                            >
+                              Hapus
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </td>
                   </tr>
                 ))
               )}
