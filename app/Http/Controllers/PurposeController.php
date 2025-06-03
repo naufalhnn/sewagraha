@@ -45,7 +45,7 @@ class PurposeController extends Controller
         return redirect()->route('purposes.index')->with('success', 'Kegunaan berhasil diubah.');
     }
 
-    public function destroY(string $id)
+    public function destroy(string $id)
     {
         $purpose = Purpose::findOrFail($id);
 

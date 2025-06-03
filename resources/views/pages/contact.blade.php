@@ -2,7 +2,7 @@
 
 @section('content')
 		{{-- Contact us --}}
-		<section class="mx-auto mb-20 max-w-6xl">
+		<section class="mx-auto mb-20 mt-28 max-w-6xl">
 				<div class="text-primary mx-auto mb-10 flex justify-center text-center text-2xl font-bold">
 						<h3>Hubungi Kami</h3>
 				</div>

@@ -54,7 +54,7 @@ export default function Venues() {
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
         <h1 className="text-2xl font-semibold">Venue</h1>
         <div className="flex justify-start gap-4">
-          <Link href="/venues/create" className="cursor-pointer">
+          <Link href={route('venues.create')} className="cursor-pointer">
             <Button className="w-full cursor-pointer">Tambah Venue</Button>
           </Link>
         </div>

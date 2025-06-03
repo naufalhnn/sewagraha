@@ -2,7 +2,7 @@
 @extends('layouts.home')
 
 @section('content')
-		<div class="flex h-screen items-center justify-center">
+		<div class="mt-28 flex h-screen items-center justify-center">
 				<div class="w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg">
 						<div class="bg-green-500 p-6 text-center">
 								<div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white">

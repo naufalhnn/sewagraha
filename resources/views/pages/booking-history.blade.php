@@ -1,7 +1,7 @@
 @extends('layouts.home')
 
 @section('content')
-		<section class="mx-auto max-w-4xl px-4 pb-20">
+		<section class="mx-auto mt-28 max-w-4xl px-4 pb-20">
 				<div class="text-primary my-5 text-center text-3xl font-bold">
 						<h1>Riwayat Pemesanan</h1>
 				</div>

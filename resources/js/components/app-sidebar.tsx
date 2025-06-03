@@ -9,27 +9,27 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
   {
     title: 'Dashboard',
-    href: '/dashboard',
+    href: '/admin/dashboard',
     icon: LayoutGrid,
   },
   {
     title: 'Venue',
-    href: '/venues',
+    href: '/admin/venues',
     icon: Building,
   },
   {
     title: 'Fasilitas',
-    href: '/facilities',
+    href: '/admin/facilities',
     icon: Router,
   },
   {
     title: 'Kegunaan Gedung',
-    href: '/purposes',
+    href: '/admin/purposes',
     icon: Armchair,
   },
   {
     title: 'Kelola Penyewaan',
-    href: '/bookings',
+    href: '/admin/bookings',
     icon: Calendar,
   },
 ];
