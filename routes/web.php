@@ -16,7 +16,14 @@ Route::get('{id}/details', [AppController::class, 'details'])->name('details');
 Route::get('about', [AppController::class, 'about'])->name('about');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('history', [AppController::class, 'history'])->name('history');
+    Route::get('history/{booking_code}/show', [AppController::class, 'bookingDetail'])->name('bookings.detail');
+    Route::put('history/{booking_code}/cancel', [AppController::class, 'bookingCancel'])->name('bookings.cancel');
+
     Route::post('bookings', [AppController::class, 'bookings'])->name('bookings.store');
+    Route::get('bookings/{booking_code}/payment', [AppController::class, 'payment'])->name('bookings.payment');
+    Route::post('bookings/{booking_code}/store', [AppController::class, 'paymentStore'])->name('bookings.payment.store');
+    Route::get('bookings/{payment_code}/success', [AppController::class, 'paymentSuccess'])->name('bookings.payment.success');
 });
 
 Route::post('bookings', [AppController::class, 'bookings'])->name('bookings.store');

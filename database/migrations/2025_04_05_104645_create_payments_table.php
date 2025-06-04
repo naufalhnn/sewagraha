@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('payment_code');
             $table->integer('total_price');
-            $table->enum('status', ['PENDING', 'PAID', 'CANCELED']);
+            $table->enum('status', ['PENDING', 'PAID', 'REQUEST CANCEL', 'CANCELED']);
             $table->dateTime('paid_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

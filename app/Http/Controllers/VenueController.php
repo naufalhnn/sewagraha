@@ -44,7 +44,7 @@ class VenueController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('venue_images', 'public');
+                $path = $image->storeAs('venue_images', 'public');
 
                 VenueImage::create([
                     'venue_id' => $venue->id,

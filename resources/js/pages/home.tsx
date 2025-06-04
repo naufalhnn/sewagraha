@@ -425,7 +425,7 @@ export default function Home() {
               </div>
               <div className="rounded-2xl border border-white/20 bg-white/10 p-2 backdrop-blur-sm">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d... (URL Peta Sebenarnya)" // Ganti dengan URL Peta yang benar
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.857698358517!2d109.58716157456408!3d-7.026007792975761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e701fecf4d9b4ed%3A0xfb3527f5801c3eea!2sBPKD%20Kabupaten%20Pekalongan!5e0!3m2!1sen!2sid!4v1748992803665!5m2!1sen!2sid"
                   className="h-64 w-full rounded-xl"
                   style={{ border: 0 }}
                   allowFullScreen={false}

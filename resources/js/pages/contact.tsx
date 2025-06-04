@@ -147,7 +147,7 @@ export default function Contact() {
               </div>
               <div className="overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.200203365008!2d109.6349306153438!3d-6.985770994956077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70230b61143c5f%3A0x4851c3369719e3a9!2sKantor%20Bupati%20Pekalongan!5e0!3m2!1sid!2sid!4v1622600000000!5m2!1sid!2sid" // <-- GANTI DENGAN URL EMBED GOOGLE MAPS YANG BENAR
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.857698358517!2d109.58716157456408!3d-7.026007792975761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e701fecf4d9b4ed%3A0xfb3527f5801c3eea!2sBPKD%20Kabupaten%20Pekalongan!5e0!3m2!1sen!2sid!4v1748992803665!5m2!1sen!2sid"
                   className="h-80 w-full"
                   loading="lazy"
                   title="Lokasi BPKD Kabupaten Pekalongan"

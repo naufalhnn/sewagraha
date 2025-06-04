@@ -1,11 +1,9 @@
 import MainLayout from '@/layouts/main-layout';
-// Impor ikon yang relevan dari lucide-react
 import { CheckCircle, Goal, Library, Sparkles, Target } from 'lucide-react';
 
 export default function About() {
   return (
     <MainLayout title="Tentang Sewagraha">
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pt-32 pb-20">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%236366f1%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%227%22%20cy%3D%227%22%20r%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')]"></div>
         <div className="relative mx-auto max-w-6xl px-4">
@@ -25,11 +23,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Section 1: Pengenalan Sewagraha (Gabungan dari section pertama Anda) */}
       <section className="bg-white py-16 md:py-24">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-xl md:p-12">
-            {/* Decorative elements */}
             <div className="absolute top-0 left-0 -mt-20 -ml-20 h-48 w-48 rounded-full bg-gradient-to-br from-blue-500/10 via-transparent to-transparent"></div>
             <div className="absolute right-0 bottom-0 -mr-16 -mb-16 h-40 w-40 rounded-full bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent"></div>
 
@@ -66,7 +62,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Section 2: Visi & Misi */}
       <section className="bg-slate-50 py-16 md:py-24">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center md:mb-16">
@@ -83,11 +78,9 @@ export default function About() {
           </div>
 
           <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-xl md:p-12">
-            {/* Decorative elements */}
             <div className="absolute top-0 right-0 -mt-24 -mr-24 h-56 w-56 rounded-full bg-gradient-to-br from-indigo-500/10 via-transparent to-transparent"></div>
 
             <div className="relative z-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-              {/* Visi */}
               <div className="rounded-xl bg-slate-50 p-6 shadow-md transition duration-300 hover:scale-[1.03] hover:shadow-lg">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="from-primary to-secondary rounded-lg bg-gradient-to-r p-2.5 text-white shadow-md">
@@ -134,10 +127,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      {/* Anda bisa menambahkan section lain di sini, misalnya "Nilai-Nilai Kami" atau "Tim Kami"
-          dengan gaya card yang serupa jika diperlukan.
-      */}
     </MainLayout>
   );
 }
