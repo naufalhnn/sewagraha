@@ -113,7 +113,7 @@ export default function Bookings() {
           <DataTable columns={tableColumns} data={bookings} searchPlaceholder="Cari penyewaan..." />
         </div>
 
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="max-h-[95vh] overflow-auto">
           <DialogHeader>
             <DialogTitle>Detail Booking: {selectedBooking?.booking_code}</DialogTitle>
             <DialogDescription>Informasi lengkap mengenai penyewaan yang dipilih.</DialogDescription>
@@ -140,6 +140,9 @@ export default function Bookings() {
               )}
               <p>
                 <strong>Nama Penyewa:</strong> {selectedBooking.user.name}
+              </p>
+              <p>
+                <strong>No Telepon:</strong> {selectedBooking.user.phone_number}
               </p>
               <p>
                 <strong>Email:</strong> {selectedBooking.user.name}

@@ -97,7 +97,6 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Table Info */}
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="text-muted-foreground text-sm">
           Menampilkan {table.getFilteredRowModel().rows.length} dari {data.length} data

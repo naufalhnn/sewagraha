@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\PurposeController;
 use App\Http\Controllers\VenueController;
@@ -29,9 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::post('bookings', [AppController::class, 'bookings'])->name('bookings.store');
 
 Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('facilities', [FacilityController::class, 'index'])->name('facilities.index');
     Route::get('facilities/create', [FacilityController::class, 'create'])->name('facilities.create');
