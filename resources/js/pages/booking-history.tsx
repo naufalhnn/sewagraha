@@ -232,14 +232,15 @@ export default function BookingHistory() {
                           </p>
                         </div>
                         <div className="mt-4 space-y-2">
-                          {upperBookingStatus === 'WAITING PAYMENT' && (
-                            <Link
-                              href={route('bookings.payment', booking.booking_code)}
-                              className="group flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
-                            >
-                              <CreditCard size={16} /> Lakukan Pembayaran
-                            </Link>
-                          )}
+                          {upperBookingStatus === 'PENDING' ||
+                            (upperBookingStatus === 'WAITING PAYMENT' && (
+                              <Link
+                                href={route('bookings.payment', booking.booking_code)}
+                                className="group flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                              >
+                                <CreditCard size={16} /> Lakukan Pembayaran
+                              </Link>
+                            ))}
 
                           {(upperBookingStatus === 'PENDING' || upperBookingStatus === 'WAITING PAYMENT') && (
                             <Dialog>

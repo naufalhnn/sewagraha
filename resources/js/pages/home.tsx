@@ -2,7 +2,6 @@ import MainLayout from '@/layouts/main-layout';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
-// SVG Icons untuk section "About" dan lainnya bisa dibuat jadi komponen kecil
 const BuildingIcon = () => (
   <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -34,7 +33,6 @@ const ArrowRightIcon = () => (
   </svg>
 );
 
-// Ikon untuk Contact Section (jika belum ada global)
 const LocationMarkerIcon = () => (
   <svg className="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -47,7 +45,6 @@ const LocationMarkerIcon = () => (
   </svg>
 );
 const PhoneIconContact = () => (
-  // Beda dari PhoneIcon di Footer
   <svg className="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
@@ -68,28 +65,18 @@ const MailIcon = () => (
   </svg>
 );
 
-// Anda mungkin ingin membuat komponen untuk setiap section jika terlalu panjang
-// Contoh: HeroSection.tsx, AboutSection.tsx, dll.
-
 export default function Home() {
-  // Data dinamis untuk halaman ini (jika ada) akan datang dari props
-  // const { someData } = usePage().props;
-
   const handleContactFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Logika submit form kontak (misalnya menggunakan Inertia form helper atau Axios)
-    alert('Form kontak dikirim! (implementasi diperlukan)');
+
+    alert('Form kontak dikirim! ');
   };
 
   return (
     <MainLayout title="Sewagraha">
-      {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-black"></div>
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-          style={{ backgroundImage: "url('/hero_bg.jpeg')" }} // Path ke public folder
-        ></div>
+        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30" style={{ backgroundImage: "url('/hero_bg.jpeg')" }}></div>
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-1/2 -right-1/2 h-full w-full animate-pulse rounded-full bg-gradient-to-bl from-blue-400/10 to-transparent"></div>
           <div className="absolute -bottom-1/2 -left-1/2 h-full w-full animate-pulse rounded-full bg-gradient-to-tr from-purple-400/10 to-transparent delay-1000"></div>
@@ -109,13 +96,13 @@ export default function Home() {
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="/venues" // Sesuaikan dengan route Anda
+                href="/venues"
                 className="group relative rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 px-8 py-4 font-semibold text-black transition-all duration-300 hover:from-yellow-300 hover:to-yellow-400 hover:shadow-xl"
               >
                 <span className="relative z-10">Lihat Daftar Gedung</span>
                 <div className="absolute inset-0 rounded-xl bg-white/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               </Link>
-              <a // Ini adalah link anchor, bisa tetap <a> atau Link jika halaman sama
+              <a
                 href="#cara-menyewa"
                 className="rounded-xl border-2 border-white/30 px-8 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/50 hover:bg-white/10"
               >
@@ -314,7 +301,7 @@ export default function Home() {
           </div>
           <div className="mt-16 text-center">
             <Link
-              href="/venues" // Sesuaikan dengan route
+              href="/venues"
               className="from-primary/80 to-secondary/80 hover:from-primary hover:to-secondary inline-flex items-center gap-3 rounded-xl bg-gradient-to-r px-8 py-4 font-semibold text-white shadow-lg transition duration-300 hover:shadow-xl"
             >
               <span>Mulai Booking Sekarang</span>

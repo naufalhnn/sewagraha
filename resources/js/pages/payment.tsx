@@ -28,7 +28,7 @@ interface AuthUser {
 type PaymentConfirmationPageProps = {
   booking: Booking;
   user: AuthUser;
-  errors?: Partial<Record<string, string>>; // Untuk error validasi form
+  errors?: Partial<Record<string, string>>;
   flash?: {
     success?: string;
     error?: string;
@@ -51,14 +51,14 @@ export default function Payment() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setData('payment_proof', file); // setData dari useForm
+      setData('payment_proof', file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPaymentProofPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     } else {
-      setData('payment_proof', null); // setData dari useForm
+      setData('payment_proof', null);
       setPaymentProofPreview(null);
     }
   };
@@ -74,16 +74,14 @@ export default function Payment() {
     });
   };
 
-  // Efek untuk mereset preview ketika form berhasil di-submit
   useEffect(() => {
     if (recentlySuccessful) {
       setPaymentProofPreview(null);
-      // Untuk mereset file input, cara ini lebih efektif:
+
       const fileInput = document.getElementById('payment_proof') as HTMLInputElement;
       if (fileInput) {
-        fileInput.value = ''; // Membersihkan value dari input file DOM
+        fileInput.value = '';
       }
-      // useForm akan mereset data.payment_proof ke nilai initialnya (null)
     }
   }, [recentlySuccessful]);
 
@@ -219,19 +217,19 @@ export default function Payment() {
                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-200 text-gray-600">
                       <Landmark className="h-4 w-4" />
                     </div>
-                    <p className="text-sm font-semibold text-gray-800">Bank XYZ</p> {/* Ganti dengan info bank aktual */}
+                    <p className="text-sm font-semibold text-gray-800">Bank XYZ</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-200 text-gray-600">
                       <CreditCard className="h-4 w-4" />
                     </div>
-                    <p className="text-sm font-semibold text-gray-800">1234567890</p> {/* Ganti dengan no. rek aktual */}
+                    <p className="text-sm font-semibold text-gray-800">1234567890</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-200 text-gray-600">
                       <UserCircle className="h-4 w-4" />
                     </div>
-                    <p className="text-sm font-semibold text-gray-800">A/N BPKD Kabupaten Pekalongan</p> {/* Ganti dengan nama pemilik rek. aktual */}
+                    <p className="text-sm font-semibold text-gray-800">A/N BPKD Kabupaten Pekalongan</p>
                   </div>
                 </div>
               </div>
@@ -261,8 +259,7 @@ export default function Payment() {
                             type="file"
                             className="sr-only"
                             onChange={handleFileChange}
-                            accept="image/jpeg, image/png, application/pdf" // Batasi tipe file
-                            // required // useForm akan menangani validasi jika di-setup di backend
+                            accept="image/jpeg, image/png"
                           />
                         </label>
                         <p className="pl-1">atau seret dan lepas</p>
@@ -285,7 +282,7 @@ export default function Payment() {
                       <img
                         src={paymentProofPreview}
                         alt="Preview Bukti Transfer"
-                        className="max-h-40 max-w-xs rounded-md object-contain md:max-h-48" // Ukuran preview disesuaikan
+                        className="max-h-40 max-w-xs rounded-md object-contain md:max-h-48"
                       />
                       <div className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                         <CheckCircle2 className="h-3.5 w-3.5" />

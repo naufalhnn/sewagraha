@@ -91,8 +91,9 @@ const ContactIcon = () => (
 );
 
 export default function Navbar() {
-  const { props, url, component } = usePage<{ auth: { user: User | null } }>();
+  const { props, url, component } = usePage<{ auth: { user: User; role: string | null } }>();
   const authUser = props.auth.user;
+  const authRole = props.auth.role;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -146,7 +147,7 @@ export default function Navbar() {
       venues: '/venues',
       contact: '/contact',
       history: '/riwayat-pemesanan',
-      'admin.dashboard': '/admin/dashboard',
+      dashboard: '/admin/dashboard',
     };
 
     try {
@@ -171,7 +172,6 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Logo Section */}
           <div className="flex items-center">
             <Link href={route('home')} className="flex items-center py-4">
               <img className="w-10" src="/icons/LogoKabPekalongan.png" alt="Logo Kabupaten Pekalongan" />
@@ -201,7 +201,7 @@ export default function Navbar() {
                 <button
                   onClick={toggleUserDropdown}
                   type="button"
-                  className="group flex items-center space-x-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-3 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
+                  className="group from-primary to-secondary flex cursor-pointer items-center space-x-2 rounded-lg bg-gradient-to-r px-3 py-1.5 text-sm font-medium text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
                   aria-expanded={isUserDropdownOpen}
                   aria-haspopup="true"
                 >
@@ -227,15 +227,15 @@ export default function Navbar() {
                   </div>
 
                   <div className="py-1">
-                    {authUser.role === 'ADMIN' && (
+                    {authRole == 'admin' && (
                       <>
                         <Link
-                          href={route('admin.dashboard')}
-                          className="group flex w-full items-center gap-2.5 rounded-md px-3.5 py-2 text-sm text-slate-700 transition-colors duration-150 hover:bg-slate-100 hover:text-blue-600 focus:bg-slate-100 focus:text-blue-600 focus:outline-none dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-blue-400 dark:focus:bg-slate-700 dark:focus:text-blue-400"
+                          href={route('dashboard')}
+                          className="group flex w-full items-center rounded-md px-3.5 py-2 text-sm text-slate-700 transition-colors duration-150 hover:bg-slate-100 hover:text-blue-600 focus:bg-slate-100 focus:text-blue-600 focus:outline-none"
                           onClick={() => setIsUserDropdownOpen(false)}
                           role="menuitem"
                         >
-                          <DashboardIcon /> {/* Menggunakan komponen SVG DashboardIcon Anda */}
+                          <DashboardIcon />
                           Dashboard
                         </Link>
                       </>
@@ -250,7 +250,7 @@ export default function Navbar() {
                       Riwayat Pemesanan
                     </Link>
 
-                    {authUser.role === 'ADMIN' && <div className="my-1.5 h-px bg-slate-200/80 dark:bg-slate-700/80"></div>}
+                    {authRole === 'admin' && <div className="my-1.5 h-px bg-slate-200/80 dark:bg-slate-700/80"></div>}
 
                     <Link
                       href={route('logout')}
@@ -267,7 +267,6 @@ export default function Navbar() {
                 </div>
               </div>
             ) : (
-              // ... (Tombol Masuk dan Daftar tetap sama)
               <div className="flex items-center space-x-2">
                 <Link href={route('login')}>
                   <button className="flex cursor-pointer items-center space-x-2 rounded-lg bg-blue-100/80 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm transition duration-300 hover:bg-blue-100 hover:shadow-md dark:bg-blue-600/30 dark:text-blue-300 dark:hover:bg-blue-600/50">
@@ -309,11 +308,7 @@ export default function Navbar() {
         ref={mobileMenuRef}
         className={`mobile-menu overflow-hidden border-t border-gray-100 bg-white/95 transition-all duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'max-h-screen py-2' : 'max-h-0'}`}
       >
-        {' '}
-        {/* Tambah py-2 jika open */}
         <div className="space-y-1 px-2">
-          {' '}
-          {/* Sedikit mengurangi padding horizontal */}
           <Link href={route('home')} className={mobileNavLinkClasses('home')} onClick={() => setIsMobileMenuOpen(false)}>
             <HomeIcon /> Beranda
           </Link>
@@ -333,16 +328,16 @@ export default function Navbar() {
                 <div className="px-3 py-1">
                   <p className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">Halo, {authUser.name.split(' ')[0]}</p>
                 </div>
-                {authUser.role === 'ADMIN' && (
+                {authRole === 'admin' && (
                   <Link
-                    href={route('admin.dashboard')}
-                    className={`${mobileNavLinkClasses('admin.dashboard')} text-slate-700 hover:text-blue-600`}
+                    href={route('dashboard')}
+                    className={`${mobileNavLinkClasses('dashboard')} text-slate-700 hover:text-blue-600`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <DashboardIcon /> Dashboard
                   </Link>
                 )}
-                {/* === Menu Riwayat Pemesanan untuk Mobile === */}
+
                 <Link
                   href={route('history')}
                   className={`${mobileNavLinkClasses('history')} text-slate-700 hover:text-blue-600`}

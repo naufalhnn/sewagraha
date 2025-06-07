@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import FlashMessage from '@/components/ui/flash-message';
+import { ImagePreview } from '@/components/ui/image-preview';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
-import { MouseEventHandler, useState } from 'react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
+import { columns, type Booking, type PaymentProof } from './columns';
+import { DataTable } from './data-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -12,137 +16,132 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-interface Venue {
-  id: number;
-  name: string;
-  description: string;
-  address: string;
-  capacity: number;
-  base_price: number;
-  building_condition: string;
-}
-
-interface Payment {
-  id: number;
-  booking_id: number;
-  user_id: number;
-  payment_code: string;
-  total_price: number;
-  status: string;
-  paid_at: Date | string | null;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface Booking {
-  id: number;
-  user_id: number;
-  venue_id: number;
-  booking_code: string;
-  event_start_date: Date | string;
-  event_end_date: Date | string;
-  purpose: string;
-  total_price: number;
-  ktp_image_path: string;
-  status: string;
-  venue: Venue;
-  payment: Payment;
-  user: User;
-}
-
 export default function Bookings() {
-  const { bookings } = usePage<{ bookings: Booking[] }>().props;
-  const [open, setOpen] = useState(false);
-  const [selectedVenue, setSelectedVenue] = useState<Booking | null>(null);
+  const { bookings, bookingDetail, paymentProof } = usePage<{
+    bookings: Booking[];
+    bookingDetail?: Booking;
+    paymentProof?: PaymentProof;
+  }>().props;
 
-  const handleDelete: MouseEventHandler = (e) => {
-    e.preventDefault();
-    if (!selectedVenue) return;
-    router.delete(route('bookings.destroy', selectedVenue.id), {
-      onSuccess: () => setOpen(false),
-    });
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false);
+
+  // 3. Gunakan useEffect untuk "mendengarkan" perubahan pada prop 'bookingDetail'
+  //    Ini adalah cara yang benar untuk menangani data asynchronous dari Inertia.
+  useEffect(() => {
+    // Jika prop bookingDetail baru saja tiba dari server...
+    if (bookingDetail) {
+      setSelectedBooking(bookingDetail); // ...simpan data baru tersebut ke state lokal
+      setIsLoadingDetail(false); // ...dan hentikan status loading.
+    }
+  }, [bookingDetail]); // Effect ini akan berjalan setiap kali `bookingDetail` berubah.
+
+  // 4. Fungsi inilah yang akan menangani semua logika saat tombol di tabel diklik
+  const handleDetailClick = (bookingFromRow: Booking) => {
+    // Buka dialog. Tombol di kolom sudah dibungkus <DialogTrigger>,
+    // jadi ini hanya untuk memastikan jika ada kasus lain.
+    // Kita set state open di sini agar lebih eksplisit.
+    setIsOpen(true);
+    setIsLoadingDetail(true);
+    setSelectedBooking(bookingFromRow); // Tampilkan data awal yang sudah ada di baris tabel
+
+    // Lakukan partial reload untuk mengambil data yang lebih lengkap
+    router.get(
+      route('bookings.index', { id: bookingFromRow.id }), // Ganti dengan nama route yang benar
+      {},
+      {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['bookingDetail', 'paymentProof'], // Hanya minta prop ini dari backend
+        onStart: () => {
+          setIsLoadingDetail(true);
+        },
+        onError: () => {
+          // Jika gagal, hentikan loading dan mungkin tampilkan pesan error
+          console.error('Gagal mengambil detail booking.');
+          setIsLoadingDetail(false);
+        },
+      },
+    );
   };
+
+  // 5. Teruskan fungsi handleDetailClick ke definisi kolom
+  //    useMemo digunakan untuk mencegah pembuatan ulang fungsi kolom pada setiap render
+  const tableColumns = useMemo(() => columns(handleDetailClick), []);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Kelola Penyewaan" />
       <FlashMessage />
 
-      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-        <h1 className="text-2xl font-semibold">Kelola Penyewaan</h1>
-        <div>
-          <table className="w-full table-auto">
-            <thead className="text-start">
-              <tr>
-                <th className="border-1 px-4 py-2">Nama User</th>
-                <th className="border-1 px-4 py-2">Gedung</th>
-                <th className="border-1 px-4 py-2">Tanggal Mulai</th>
-                <th className="border-1 px-4 py-2">Tanggal Berakhir</th>
-                <th className="border-1 px-4 py-2">Tujuan</th>
-                <th className="border-1 px-4 py-2">Total Biaya</th>
-                <th className="border-1 px-4 py-2">Status</th>
-                <th className="w-36 border-1 px-4 py-2">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.length == 0 ? (
-                <tr>
-                  <td colSpan={7} className="border px-4 py-2 text-center font-semibold">
-                    Belum ada data
-                  </td>
-                </tr>
-              ) : (
-                bookings.map((booking) => (
-                  <tr key={booking.id} className="align-top">
-                    <td className="border px-4 py-2">
-                      <div className="line-clamp-2">{booking.user.name}</div>
-                    </td>
-                    <td className="max-w-[200px] border px-4 py-2">
-                      <div className="line-clamp-2">{booking.venue.name}</div>
-                    </td>
-                    <td className="max-w-[200px] border px-4 py-2">
-                      {new Intl.DateTimeFormat('id-ID', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      }).format(new Date(booking.event_start_date))}
-                    </td>
-                    <td className="border px-4 py-2">
-                      {new Intl.DateTimeFormat('id-ID', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      }).format(new Date(booking.event_end_date))}
-                    </td>
-                    <td className="max-w-[200px] border px-4 py-2">
-                      <div className="line-clamp-2">{booking.purpose}</div>
-                    </td>
-                    <td className="border px-4 py-2">
-                      {new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR',
-                        minimumFractionDigits: 0,
-                      }).format(booking.total_price)}
-                    </td>
-                    <td className="border px-4 py-2">{booking.status}</td>
-                    <td className="flex min-h-[4rem] items-center justify-center gap-1 border px-4 py-2">
-                      <Link href={route('bookings.show', booking.id)} className="cursor-pointer">
-                        <Button size={'sm'} className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200">
-                          Detail
-                        </Button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+      {/* 6. Komponen Dialog utama yang mengontrol semua state */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold">Kelola Penyewaan</h1>
+          </div>
+          <DataTable columns={tableColumns} data={bookings} searchPlaceholder="Cari penyewaan..." />
         </div>
-      </div>
+
+        {/* 7. Konten Dialog yang dinamis berdasarkan state */}
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Detail Booking: {selectedBooking?.booking_code}</DialogTitle>
+            <DialogDescription>Informasi lengkap mengenai penyewaan yang dipilih.</DialogDescription>
+          </DialogHeader>
+
+          {isLoadingDetail ? (
+            <div className="py-10 text-center">Memuat detail, harap tunggu...</div>
+          ) : selectedBooking ? (
+            <div className="grid gap-2 py-4">
+              {paymentProof ? (
+                <div className="space-y-2">
+                  <h4 className="border-b pb-1 font-semibold">Bukti Pembayaran</h4>
+                  <ImagePreview
+                    src={`/storage/${paymentProof.payment_proof_image_path}`}
+                    alt={`Bukti pembayaran untuk booking ${selectedBooking?.booking_code}`}
+                  />
+                  <p className="mt-2 text-sm text-gray-500">Diupload pada: {new Date(paymentProof.uploaded_at).toLocaleString('id-ID')}</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <h4 className="border-b pb-1 font-semibold">Bukti Pembayaran</h4>
+                  <p className="text-sm text-gray-500 italic">Belum ada bukti pembayaran yang diupload.</p>
+                </div>
+              )}
+              <p>
+                <strong>Nama Penyewa:</strong> {selectedBooking.user.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {selectedBooking.user.name}
+              </p>
+              <p>
+                <strong>Gedung:</strong> {selectedBooking.venue.name}
+              </p>
+              <p>
+                <strong>Status:</strong> <span className="font-semibold">{selectedBooking.status.replace('_', ' ')}</span>
+              </p>
+              <p>
+                <strong>Total Biaya:</strong>{' '}
+                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(selectedBooking.total_price)}
+              </p>
+
+              {/* Tambahkan informasi detail lainnya di sini */}
+              {/* Contoh: menampilkan gambar KTP atau bukti bayar jika ada */}
+            </div>
+          ) : (
+            <div className="py-10 text-center text-red-500">Gagal memuat data detail.</div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsOpen(false)}>
+              Tutup
+            </Button>
+            {/* Jika Anda butuh tombol aksi lain seperti "Setujui" atau "Tolak", letakkan di sini */}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }

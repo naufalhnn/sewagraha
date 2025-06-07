@@ -13,7 +13,7 @@ import FlashMessage from '@/components/ui/flash-message';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { SquarePen, Trash } from 'lucide-react';
+import { Plus, SquarePen, Trash } from 'lucide-react';
 import { MouseEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -51,23 +51,25 @@ export default function Purposes() {
         <h1 className="text-2xl font-semibold">Kegunaan Gedung</h1>
         <div className="flex justify-start gap-4">
           <Link href="/purposes/create" className="cursor-pointer">
-            <Button className="w-full cursor-pointer">Tambah Kegunaan Gedung</Button>
+            <Button className="w-full cursor-pointer">
+              <Plus /> Tambah Kegunaan Gedung
+            </Button>
           </Link>
         </div>
         <div>
           <table className="w-full table-auto">
             <thead className="text-start">
               <tr>
-                <th className="border-1 px-4 py-2">Kegunaan</th>
-                <th className="border-1 px-4 py-2">Deskripsi</th>
-                <th className="w-36 border-1 px-4 py-2">Aksi</th>
+                <th className="border-1 px-4 py-1">Kegunaan</th>
+                <th className="border-1 px-4 py-1">Deskripsi</th>
+                <th className="w-36 border-1 px-4 py-1">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {purposes.map((purpose) => (
                 <tr key={purpose.id}>
-                  <td className="border-1 px-4 py-2">{purpose.name}</td>
-                  <td className="border-1 px-4 py-2">{purpose.description}</td>
+                  <td className="border-1 px-4 py-1">{purpose.name}</td>
+                  <td className="border-1 px-4 py-1">{purpose.description}</td>
                   <td className="flex justify-center space-x-1 border-1 px-4 py-2 text-center">
                     <Link href={route('purposes.edit', purpose.id)} className="cursor-pointer">
                       <Button size={'sm'} className="cursor-pointer bg-blue-100 text-sm text-blue-600 transition duration-300 hover:bg-blue-200">

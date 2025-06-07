@@ -1,6 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
 
-// SVG Icons
 const LocationIcon = () => (
   <svg className="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -72,10 +71,8 @@ export default function Footer() {
     let routePath = '';
 
     try {
-      // Dapatkan URL dari route helper
       routePath = route(routeName);
     } catch (error) {
-      // Fallback jika route tidak ditemukan
       console.log(error);
       routePath = `/${routeName === 'home' ? '' : routeName}`;
     }
@@ -89,10 +86,8 @@ export default function Footer() {
     let routePath = '';
 
     try {
-      // Dapatkan URL dari route helper
       routePath = route(routeName);
     } catch (error) {
-      // Fallback jika route tidak ditemukan
       console.log(error);
       routePath = `/${routeName === 'home' ? '' : routeName}`;
     }
@@ -103,13 +98,11 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 h-72 w-72 animate-pulse rounded-full bg-blue-400 mix-blend-multiply blur-xl filter"></div>
         <div className="absolute right-1/4 bottom-0 h-96 w-96 animate-pulse rounded-full bg-purple-400 mix-blend-multiply blur-xl filter delay-1000"></div>
       </div>
 
-      {/* Header Section with Logo */}
       <div className="relative border-b border-white/10">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-center space-x-6">
@@ -125,10 +118,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Main Footer Content */}
       <div className="relative container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          {/* Quick Links */}
           <div className="space-y-6">
             <h4 className="relative mb-6 text-lg font-semibold text-white">
               Menu Utama
@@ -154,7 +145,6 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Contact Info */}
           <div className="space-y-6">
             <h4 className="relative mb-6 text-lg font-semibold text-white">
               Informasi Kontak
@@ -188,7 +178,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Social Media */}
           <div className="space-y-6">
             <h4 className="relative mb-6 text-lg font-semibold text-white">
               Ikuti Kami
@@ -235,7 +224,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Copyright Section */}
       <div className="relative border-t border-white/10">
         <div className="container mx-auto px-6 py-6">
           <div className="flex flex-col items-center justify-between text-center md:flex-row">
