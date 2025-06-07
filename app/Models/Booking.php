@@ -23,6 +23,11 @@ class Booking extends Model
         'status',
     ];
 
+    protected $casts = [
+        'event_start_date' => 'date',
+        'event_end_date' => 'date',
+    ];
+
     /**
      * The "booted" method of the model.
      *

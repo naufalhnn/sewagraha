@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\PaymentProof;
 use App\Models\Venue;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +40,27 @@ class AppController extends Controller
 
     public function details(string $id)
     {
-        $venue = Venue::with(['venue_images', 'purposes', 'facilities'])->findOrFail($id);
 
-        return Inertia::render('details', compact('venue'));
+        $venue = Venue::with(['venue_images', 'purposes', 'facilities'])->findOrFail($id);
+        $unavailableBookings = Booking::where('venue_id', $id)
+            ->whereIn('status', ['PENDING', 'WAITING PAYMENT', 'VERIFYING PAYMENT', 'REQUEST CANCEL',])
+            ->get(['event_start_date', 'event_end_date']);
+
+        $bookedDates = [];
+        foreach ($unavailableBookings as $dates) {
+            $startDate = Carbon::parse($dates->event_start_date)->copy();
+            $endDate = Carbon::parse($dates->event_end_date);
+
+
+            while ($startDate->lte($endDate)) {
+                $bookedDates[] = $startDate->toDateString();
+                $startDate->addDays();
+            }
+        }
+
+        $unavailableDates = array_values(array_unique($bookedDates));
+
+        return Inertia::render('details', compact('venue', 'unavailableDates'));
     }
 
     public function bookings(Request $request)

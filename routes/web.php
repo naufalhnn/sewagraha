@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::post('bookings', [AppController::class, 'bookings'])->name('bookings.store');
 
-Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
