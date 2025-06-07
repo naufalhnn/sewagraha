@@ -96,7 +96,7 @@ class AppController extends Controller
             'status' => 'PENDING',
         ]);
 
-        return redirect()->route('bookings.payment', $bookingCode);
+        return redirect()->route('bookings.payment', $bookingCode)->with('success', 'Booking berhasil, silakan melanjutkan proses pembayaran');
     }
 
     public function payment(string $bookingCode)
@@ -137,7 +137,7 @@ class AppController extends Controller
             'status' => 'VERIFYING PAYMENT',
         ]);
 
-        return redirect()->route('bookings.payment.success', $paymentCode);
+        return redirect()->route('bookings.payment.success', $paymentCode)->with('success', 'Pembayaran berhasil, pembayaran sedang di verifikasi');
     }
 
     public function paymentSuccess(string $paymentCode)
@@ -187,6 +187,6 @@ class AppController extends Controller
             ]);
         }
 
-        return redirect()->route('history');
+        return redirect()->route('history')->with('success', 'Booking berhasil dibatalkan');
     }
 }

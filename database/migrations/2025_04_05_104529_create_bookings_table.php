@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('purpose');
             $table->integer('total_price');
             $table->string('ktp_image_path');
-            $table->enum('status', ['PENDING', 'WAITING PAYMENT', 'VERIFYING PAYMENT', 'REQUEST CANCEL', 'COMPLETED', 'CANCELED']);
+            $table->enum('status', ['PENDING', 'WAITING PAYMENT', 'VERIFYING PAYMENT', 'REQUEST CANCEL', 'CONFIRMED', 'COMPLETED', 'CANCELED']);
             $table->timestamps();
             $table->softDeletes();
         });

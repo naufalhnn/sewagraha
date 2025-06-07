@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\PaymentProof;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -34,5 +35,22 @@ class BookingController extends Controller
         $booking = Booking::with(['venue', 'payment'])->findOrFail($id)->get();
 
         return response()->json($booking);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->update([
+            'status' => $request->status,
+        ]);
+
+        if ($request->status == 'CANCELED') {
+            $payment = Payment::where('booking_id', $booking->id)->first();
+            $payment->update([
+                'status' => $request->status,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Status berhasil diubah');
     }
 }

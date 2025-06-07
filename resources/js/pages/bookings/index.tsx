@@ -1,11 +1,20 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import FlashMessage from '@/components/ui/flash-message';
 import { ImagePreview } from '@/components/ui/image-preview';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 import { columns, type Booking, type PaymentProof } from './columns';
 import { DataTable } from './data-table';
 
@@ -27,38 +36,29 @@ export default function Bookings() {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
 
-  // 3. Gunakan useEffect untuk "mendengarkan" perubahan pada prop 'bookingDetail'
-  //    Ini adalah cara yang benar untuk menangani data asynchronous dari Inertia.
   useEffect(() => {
-    // Jika prop bookingDetail baru saja tiba dari server...
     if (bookingDetail) {
-      setSelectedBooking(bookingDetail); // ...simpan data baru tersebut ke state lokal
-      setIsLoadingDetail(false); // ...dan hentikan status loading.
+      setSelectedBooking(bookingDetail);
+      setIsLoadingDetail(false);
     }
-  }, [bookingDetail]); // Effect ini akan berjalan setiap kali `bookingDetail` berubah.
+  }, [bookingDetail]);
 
-  // 4. Fungsi inilah yang akan menangani semua logika saat tombol di tabel diklik
   const handleDetailClick = (bookingFromRow: Booking) => {
-    // Buka dialog. Tombol di kolom sudah dibungkus <DialogTrigger>,
-    // jadi ini hanya untuk memastikan jika ada kasus lain.
-    // Kita set state open di sini agar lebih eksplisit.
     setIsOpen(true);
     setIsLoadingDetail(true);
-    setSelectedBooking(bookingFromRow); // Tampilkan data awal yang sudah ada di baris tabel
+    setSelectedBooking(bookingFromRow);
 
-    // Lakukan partial reload untuk mengambil data yang lebih lengkap
     router.get(
-      route('bookings.index', { id: bookingFromRow.id }), // Ganti dengan nama route yang benar
+      route('bookings.index', { id: bookingFromRow.id }),
       {},
       {
         preserveState: true,
         preserveScroll: true,
-        only: ['bookingDetail', 'paymentProof'], // Hanya minta prop ini dari backend
+        only: ['bookingDetail', 'paymentProof'],
         onStart: () => {
           setIsLoadingDetail(true);
         },
         onError: () => {
-          // Jika gagal, hentikan loading dan mungkin tampilkan pesan error
           console.error('Gagal mengambil detail booking.');
           setIsLoadingDetail(false);
         },
@@ -66,8 +66,38 @@ export default function Bookings() {
     );
   };
 
-  // 5. Teruskan fungsi handleDetailClick ke definisi kolom
-  //    useMemo digunakan untuk mencegah pembuatan ulang fungsi kolom pada setiap render
+  const handleStatusUpdate: MouseEventHandler = (e) => {
+    e.preventDefault();
+
+    if (selectedBooking?.status == 'VERIFYING PAYMENT') {
+      const status = 'CONFIRMED';
+      router.put(
+        route('bookings.update', selectedBooking?.id),
+        { status: status },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          onSuccess: () => {
+            setIsOpen(false);
+          },
+        },
+      );
+    } else if (selectedBooking?.status == 'REQUEST CANCEL') {
+      const status = 'CANCELED';
+      router.put(
+        route('bookings.update', selectedBooking?.id),
+        { status: status },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          onSuccess: () => {
+            setIsOpen(false);
+          },
+        },
+      );
+    }
+  };
+
   const tableColumns = useMemo(() => columns(handleDetailClick), []);
 
   return (
@@ -75,7 +105,6 @@ export default function Bookings() {
       <Head title="Kelola Penyewaan" />
       <FlashMessage />
 
-      {/* 6. Komponen Dialog utama yang mengontrol semua state */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
           <div className="flex items-center justify-between">
@@ -84,7 +113,6 @@ export default function Bookings() {
           <DataTable columns={tableColumns} data={bookings} searchPlaceholder="Cari penyewaan..." />
         </div>
 
-        {/* 7. Konten Dialog yang dinamis berdasarkan state */}
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Detail Booking: {selectedBooking?.booking_code}</DialogTitle>
@@ -126,9 +154,6 @@ export default function Bookings() {
                 <strong>Total Biaya:</strong>{' '}
                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(selectedBooking.total_price)}
               </p>
-
-              {/* Tambahkan informasi detail lainnya di sini */}
-              {/* Contoh: menampilkan gambar KTP atau bukti bayar jika ada */}
             </div>
           ) : (
             <div className="py-10 text-center text-red-500">Gagal memuat data detail.</div>
@@ -138,7 +163,31 @@ export default function Bookings() {
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               Tutup
             </Button>
-            {/* Jika Anda butuh tombol aksi lain seperti "Setujui" atau "Tolak", letakkan di sini */}
+            {selectedBooking?.status == 'PENDING' || selectedBooking?.status == 'VERIFYING PAYMENT' || selectedBooking?.status == 'REQUEST CANCEL' ? (
+              <div className="flex space-x-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="default" className="cursor-pointer bg-green-200 text-green-700 transition duration-300 hover:bg-green-300">
+                      Setujui
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader className="font-bold">Setujui {selectedBooking.status}?</DialogHeader>
+                    <DialogDescription>Klik konfirmasi jika ingin merubah status booking {selectedBooking.booking_code}</DialogDescription>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant={'ghost'}>Batal</Button>
+                      </DialogClose>
+                      <Button onClick={handleStatusUpdate} className="cursor-pointer">
+                        Konfirmasi
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

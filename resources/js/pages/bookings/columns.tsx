@@ -231,7 +231,7 @@ export const columns = (onKelolaClick: (booking: Booking) => void): ColumnDef<Bo
               <Button
                 size={'sm'}
                 variant="destructive"
-                className="cursor-pointer bg-red-100 text-red-600 hover:bg-red-200"
+                className="cursor-pointer bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
                 onClick={() => onKelolaClick(booking)}
               >
                 Kelola
@@ -241,7 +241,6 @@ export const columns = (onKelolaClick: (booking: Booking) => void): ColumnDef<Bo
         );
       }
 
-      // Tombol "Detail" juga melakukan hal yang sama.
       return (
         <div className="text-center">
           <DialogTrigger asChild>

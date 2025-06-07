@@ -12,6 +12,7 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Search } from 'lucide-react';
 import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
@@ -39,7 +40,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className="rounded-md border p-3">
-      <div className="flex items-center py-4">
+      <div className="flex items-center space-x-2 py-4">
+        <Search className="h-4 w-4 text-gray-500" />
         <Input
           placeholder="Cari berdasarkan nama gedung..."
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}

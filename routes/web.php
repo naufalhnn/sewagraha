@@ -60,6 +60,7 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::get('bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('bookings/{id}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
     Route::get('bookings/{id}/show', [BookingController::class, 'show'])->name('bookings.show');
+    Route::put('bookings/{id}/update', [BookingController::class, 'update'])->name('bookings.update');
 });
 
 require __DIR__ . '/settings.php';
