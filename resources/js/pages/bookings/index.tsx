@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import FlashMessage from '@/components/ui/flash-message';
 import { ImagePreview } from '@/components/ui/image-preview';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
+import { Calendar1 } from 'lucide-react';
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 import { columns, type Booking, type PaymentProof } from './columns';
 import { DataTable } from './data-table';
@@ -103,12 +103,14 @@ export default function Bookings() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Kelola Penyewaan" />
-      <FlashMessage />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold">Kelola Penyewaan</h1>
+            <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-800 dark:text-slate-100">
+              <Calendar1 className="h-6 w-6" />
+              Kelola Penyewaan
+            </h1>
           </div>
           <DataTable columns={tableColumns} data={bookings} searchPlaceholder="Cari penyewaan..." />
         </div>

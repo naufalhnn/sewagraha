@@ -8,7 +8,6 @@ use App\Models\Purpose;
 use App\Models\Venue;
 use App\Models\VenueImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -44,7 +43,7 @@ class VenueController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->storeAs('venue_images', 'public');
+                $path = $image->store('venue_images', 'public');
 
                 VenueImage::create([
                     'venue_id' => $venue->id,

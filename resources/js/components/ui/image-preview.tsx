@@ -26,7 +26,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ src, alt, className 
   // Jika terjadi error saat memuat gambar
   if (hasError) {
     return (
-      <div className={`flex aspect-video h-64 w-auto flex-col items-center justify-center rounded-lg border bg-gray-50 text-gray-500 ${className}`}>
+      <div className={`flex aspect-video h-60 w-auto flex-col items-center justify-center rounded-lg border bg-gray-50 text-gray-500 ${className}`}>
         <ImageIcon className="h-12 w-12" />
         <p className="mt-2 text-sm">Gambar tidak dapat dimuat</p>
       </div>
@@ -47,12 +47,12 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ src, alt, className 
         href={src}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative block h-64 w-auto cursor-zoom-in overflow-hidden rounded-lg border"
+        className="group relative block h-60 w-auto cursor-zoom-in overflow-hidden rounded-lg border"
       >
         <img
           src={src}
           alt={alt}
-          className={`aspect-video h-64 w-auto object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          className={`aspect-video h-60 w-auto object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleImageLoad}
           onError={handleImageError}
         />

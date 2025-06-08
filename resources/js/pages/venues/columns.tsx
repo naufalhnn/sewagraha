@@ -17,7 +17,6 @@ export interface Venue {
   building_condition: string;
 }
 
-// Fungsi untuk menangani pembukaan dialog dan pemilihan venue
 type ActionsCellProps = {
   row: {
     original: Venue;
@@ -69,12 +68,12 @@ export const getColumns = (onDeleteClick: (venue: Venue) => void): ColumnDef<Ven
   {
     accessorKey: 'description',
     header: 'Deskripsi',
-    cell: ({ row }) => <div className="line-clamp-2 max-w-[200px]">{row.original.description}</div>,
+    cell: ({ row }) => <div className="line-clamp-2 max-w-[200px] truncate">{row.original.description}</div>,
   },
   {
     accessorKey: 'address',
     header: 'Alamat',
-    cell: ({ row }) => <div className="line-clamp-2 max-w-[200px]">{row.original.address}</div>,
+    cell: ({ row }) => <div className="line-clamp-2 max-w-[200px] truncate">{row.original.address}</div>,
   },
   {
     accessorKey: 'capacity',
