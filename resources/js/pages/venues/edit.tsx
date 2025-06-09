@@ -11,7 +11,6 @@ import { type BreadcrumbItem, type PageProps as PagePropsShared } from '@/types'
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { SquarePen, Trash, UploadCloud } from 'lucide-react';
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import { route } from 'ziggy-js';
 
 interface Facility {
   id: number;
