@@ -14,6 +14,22 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    # === BAGIAN 1: MENYIAPKAN SERVICE DATABASE MYSQL ===
+    # Blok ini akan menjalankan container Docker MySQL di samping job utama Anda.
+    services:
+      mysql:
+        image: mysql:8.0 # Anda bisa menggunakan versi lain jika perlu
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' # Mengizinkan koneksi tanpa password
+          MYSQL_DATABASE: sewagraha_test_db # Membuat database ini secara otomatis
+        ports:
+          - 3306:3306 # Memetakan port agar bisa diakses via localhost di runner
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,9 +37,11 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.4 # Versi PHP Anda sudah benar
           tools: composer:v2
           coverage: xdebug
+          # Tambahkan ekstensi pdo_mysql yang dibutuhkan untuk koneksi ke MySQL
+          extensions: pdo_mysql
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -37,14 +55,25 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Install Dependencies
+      - name: Install Composer Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Copy Environment File
-        run: cp .env.example .env
+        # Kita akan menggunakan .env dari phpunit.xml, tapi langkah ini tetap baik untuk ada
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Generate Application Key
         run: php artisan key:generate
 
-      - name: Tests
+      - name: Run Tests
+        # === BAGIAN 2: MEMBERIKAN ENV DATABASE KE LANGKAH TES ===
+        # Variabel env di sini akan menimpa konfigurasi di .env atau phpunit.xml
+        # selama langkah ini berjalan.
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1 # Host untuk service adalah localhost dari runner
+          DB_PORT: 3306 # Port yang sudah di-mapping oleh service
+          DB_DATABASE: sewagraha_test_db # Nama database yang sama dengan di service
+          DB_USERNAME: root # Username default dari service MySQL
+          DB_PASSWORD: '' # Password kosong sesuai env MYSQL_ALLOW_EMPTY_PASSWORD
         run: ./vendor/bin/phpunit
