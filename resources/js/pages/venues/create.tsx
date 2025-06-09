@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Building, UploadCloud } from 'lucide-react';
+import { Building, Plus, UploadCloud } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -243,6 +243,13 @@ export default function CreateVenue() {
                           </label>
                         </div>
                       ))}
+                      <div className="mt-3">
+                        <Link href={route('facilities.create')}>
+                          <Button size={'sm'} className="cursor-pointer">
+                            <Plus /> Tambah Fasilitas
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                     {errors.facilities && <InputError message={errors.facilities} className="mt-2" />}
                   </div>
@@ -269,6 +276,11 @@ export default function CreateVenue() {
                     </div>
                     {errors.purposes && <InputError message={errors.purposes} className="mt-2" />}
                   </div>
+                  <Link href={route('purposes.create')}>
+                    <Button size={'sm'} className="cursor-pointer">
+                      <Plus /> Tambah Fasilitas
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>

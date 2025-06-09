@@ -10,11 +10,11 @@ import { FormEventHandler } from 'react';
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Kegunaan Gedung',
-    href: '/purposes',
+    href: route('purposes.index'),
   },
   {
     title: 'Tambah Kegunaan',
-    href: '/purposes/create',
+    href: route('purposes.create'),
   },
 ];
 
