@@ -3,7 +3,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-  { title: 'Venue', href: '/venues' },
+  { title: 'Venue', href: route('venues.index') },
   { title: 'Detail Venue', href: '#' },
 ];
 

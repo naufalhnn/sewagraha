@@ -15,11 +15,11 @@ import { FormEventHandler, useState } from 'react';
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Venue',
-    href: '/venues',
+    href: route('venues.index'),
   },
   {
     title: 'Tambah Venue',
-    href: '/venues/create',
+    href: route('venues.create'),
   },
 ];
 

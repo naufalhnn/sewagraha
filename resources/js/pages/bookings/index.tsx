@@ -21,7 +21,7 @@ import { DataTable } from './data-table';
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Kelola Penyewaan',
-    href: '/bookings',
+    href: route('bookings.index'),
   },
 ];
 
