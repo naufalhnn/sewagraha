@@ -2,11 +2,14 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Spatie\Permission\PermissionRegistrar; // Impor kelas untuk Spatie
 
 abstract class TestCase extends BaseTestCase
 {
+    use RefreshDatabase;
+    protected $seed = true;
     /**
      * The base URL to use while testing the application.
      *
